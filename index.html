@@ -22,7 +22,7 @@
 <div class="row">
 	<div class="col-lg-8 col-lg-offset-2">
 		<div class="col-lg-4">
-		<div class="panel panel-default" onclick="PointAndPlay(60,60,'tourbigdipper');">
+		<div class="panel panel-default" onclick="PointAndPlay('tourbigdipper');">
 			<div class="panel-heading">
 				<h3>The Science</h3>
 			</div>
@@ -37,7 +37,7 @@
 			</audio>
 		</div>
 		</div><div class="col-lg-4">
-		<div class="panel panel-default" onclick="PointAndPlay(0,0,'tourorion');">
+		<div class="panel panel-default" onclick="PointAndPlay('tourorion');">
 			<div class="panel-heading">
 				<h3>The Stories</h3>
 			</div>
@@ -52,7 +52,7 @@
 			</audio>
 		</div>
 		</div><div class="col-lg-4">
-		<div class="panel panel-default" onclick="PointAndPlay(0,0,'tourbigdipper');">
+		<div class="panel panel-default" onclick="PointAndPlay('tourpolaris');">
 			<div class="panel-heading">
 				<h3>The Stars</h3>
 			</div>
@@ -71,57 +71,10 @@
 <script>
 
 var server = "http://192.168.4.1";
-var squarecoords = [[60,60],[60,120],[120,120],[120,60]]
-
-function tracePoints(points, steptime=1000){
-			for (a = 0; a < points.length; a++) {
-		  (function (a) {
-		    setTimeout(function () {
-					$.ajax({
-					type: "GET",
-					url: server,
-				//	data: {
-					//	x:points[a][0],
-						//y:points[a][1]
-				//	},
-
-					success: function(){
-						console.log(points[a]);
-					}
-				});
-			}, steptime*a);
-		})(a);
-	}
-}
-
-function loopTrace(coords, steptime, loopcount){
-	for (a = 0; a < loopcount; a++) {
-	(function (a) {
-						setTimeout(function () {
-		tracePoints(coords);
-	}, steptime*Math.pow(loopcount,2)*a);
-})(a);
-}
-}
-
-
-function PointAndPlay(x,y,audiofile){
-	/*$.ajax({
-	type: "POST",
-	url: server,
-	body: {
-		x:x,
-		y:y
-	},
-	success: function(){
-		document.getElementById(audiofile).play();
-
-		loopTrace(squarecoords, 500, 3)
-
-	}
-});*/
-
-$.post(server, "x=60&y=60",function(){});
+function PointAndPlay(tourname){
+	document.getElementById(tourname).play();
+	$.post(server,"tour="+tourname);
+	// Alternatively use $.post(server+"/"+tourname);
 }
 
 </script>
