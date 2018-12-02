@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Astrobot Demo</title>
+
+<link rel="stylesheet" href="bootstrap.min.css" />
+
+<style>
+	.panel:hover {
+		box-shadow: 5px 5px 3px #e9e9e9;
+	}
+</style>
+</head>
+<body>
+<script src="jquery-3.3.1.min.js"></script>
+
+<div class="row">
+	<div class="col-lg-5 col-lg-offset-3" style="text-align: center;">
+		<h1>Astrobot</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2">
+		<div class="col-lg-4">
+		<div class="panel panel-default" onclick="PointAndPlay(60,60,'tourbigdipper');">
+			<div class="panel-heading">
+				<h3>The Science</h3>
+			</div>
+			<div class="panel-body">
+				<img src="bigdipper.jpg" width="100%" />
+			</div>
+			<div class="panel-footer">
+				<h4>Big Dipper</h4>
+			</div>
+			<audio id="tourbigdipper">
+				<source src="ding.mp3">
+			</audio>
+		</div>
+		</div><div class="col-lg-4">
+		<div class="panel panel-default" onclick="PointAndPlay(0,0,'tourorion');">
+			<div class="panel-heading">
+				<h3>The Stories</h3>
+			</div>
+			<div class="panel-body">
+				<img src="orion.jpg" width="100%" />
+			</div>
+			<div class="panel-footer">
+				<h4>Orion</h4>
+			</div>
+			<audio id="tourorion">
+				<source src="ding.mp3">
+			</audio>
+		</div>
+		</div><div class="col-lg-4">
+		<div class="panel panel-default" onclick="PointAndPlay(0,0,'tourbigdipper');">
+			<div class="panel-heading">
+				<h3>The Stars</h3>
+			</div>
+			<div class="panel-body">
+				<img src="polaris.jpg" width="100%" />
+			</div>
+			<div class="panel-footer">
+				<h4>Polaris</h4>
+			</div>
+			<audio id="tourpolaris">
+				<source src="ding.mp3">
+			</audio>
+		</div></div>
+	</div>
+</div>
+<script>
+
+var server = "http://192.168.4.1";
+var squarecoords = [[60,60],[60,120],[120,120],[120,60]]
+
+function tracePoints(points, steptime=1000){
+			for (a = 0; a < points.length; a++) {
+		  (function (a) {
+		    setTimeout(function () {
+					$.ajax({
+					type: "GET",
+					url: server,
+				//	data: {
+					//	x:points[a][0],
+						//y:points[a][1]
+				//	},
+
+					success: function(){
+						console.log(points[a]);
+					}
+				});
+			}, steptime*a);
+		})(a);
+	}
+}
+
+function loopTrace(coords, steptime, loopcount){
+	for (a = 0; a < loopcount; a++) {
+	(function (a) {
+						setTimeout(function () {
+		tracePoints(coords);
+	}, steptime*Math.pow(loopcount,2)*a);
+})(a);
+}
+}
+
+
+function PointAndPlay(x,y,audiofile){
+	/*$.ajax({
+	type: "POST",
+	url: server,
+	body: {
+		x:x,
+		y:y
+	},
+	success: function(){
+		document.getElementById(audiofile).play();
+
+		loopTrace(squarecoords, 500, 3)
+
+	}
+});*/
+
+$.post(server, "x=60&y=60",function(){});
+}
+
+</script>
+</body>
+</html>
